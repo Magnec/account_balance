@@ -1,0 +1,7 @@
+name: 'Account Balance'
+type: module
+description: 'Updates account balance when transactions are created, updated, or deleted.'
+core_version_requirement: ^11
+package: Custom
+dependencies:
+  - eck

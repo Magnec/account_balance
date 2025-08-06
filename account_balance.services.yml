@@ -1,0 +1,4 @@
+services:
+  account_balance.manager:
+    class: Drupal\account_balance\AccountBalanceManager
+    arguments: ['@entity_type.manager']

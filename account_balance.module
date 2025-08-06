@@ -1,0 +1,33 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_insert().
+ */
+function account_balance_entity_insert(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() === 'account_transactions') {
+    \Drupal::service('account_balance.manager')->updateBalanceOnTransactionChange($entity);
+    \Drupal::messenger()->addMessage(t('Giriş işlemi tamamlandı ve bakiye güncellendi.'));
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function account_balance_entity_update(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() === 'account_transactions') {
+    \Drupal::service('account_balance.manager')->updateBalanceOnTransactionChange($entity, TRUE);
+    \Drupal::messenger()->addMessage(t('İşlem güncellendi ve bakiye yeniden hesaplandı.'));
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function account_balance_entity_delete(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() === 'account_transactions') {
+    \Drupal::service('account_balance.manager')->revertBalanceOnTransactionDelete($entity);
+    \Drupal::messenger()->addMessage(t('İşlem silindi ve bakiye geri alındı.'));
+  }
+}
